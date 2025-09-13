@@ -1,0 +1,38 @@
+﻿@model IEnumerable<HabitHero.Models.Habit>
+
+<h1 class="mb-4">Habit Dashboard</h1>
+<p>Visualize your current streaks for all habits.</p>
+
+<canvas id="streakChart" width="400" height="200"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('streakChart').getContext('2d');
+        var habitNames = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(h => h.Name)));
+        var streaks = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(h => h.CurrentStreak)));
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: habitNames,
+                datasets: [{
+                    label: 'Current Streak',
+                    data: streaks,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+}

@@ -1,37 +1,74 @@
 @model IEnumerable<HabitHero.Models.Habit>
 
 @{
-    ViewData["Title"] = "Habits";
+    ViewData["Title"] = "My Habits";
 }
 
-<h1>Habits</h1>
+<h1 class="mb-4">My Habits</h1>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New Habit</a>
+    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-info ms-2">View Dashboard</a>
+    <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;" class="ms-2">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
 </p>
 
-<table class="table table-striped">
-    <thead>
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
         <tr>
             <th>Name</th>
             <th>Description</th>
             <th>Start Date</th>
+            <th>Last Completed</th>
+            <th>Current Streak</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var habit in Model)
-    {
-        <tr>
-            <td>@habit.Name</td>
-            <td>@habit.Description</td>
-            <td>@habit.StartDate.ToShortDateString()</td>
-            <td>
-                <a asp-action="Details" asp-route-id="@habit.Id" class="btn btn-info btn-sm">Details</a>
-                <a asp-action="Edit" asp-route-id="@habit.Id" class="btn btn-warning btn-sm">Edit</a>
-                <a asp-action="Delete" asp-route-id="@habit.Id" class="btn btn-danger btn-sm">Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var habit in Model)
+        {
+            <tr class="@(habit.LastCompletedDate == DateTime.Today ? "table-success" : "")">
+                <td>@habit.Name</td>
+                <td>@habit.Description</td>
+                <td>@habit.StartDate.ToShortDateString()</td>
+                <td>@(habit.LastCompletedDate?.ToShortDateString() ?? "-")</td>
+                <td>
+                    <span class="badge @(habit.CurrentStreak > 0 ? "bg-success" : "bg-secondary")">
+                        @habit.CurrentStreak
+                    </span>
+                </td>
+                <td>
+                    <form asp-action="ToggleCompletion" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@habit.Id" />
+                        <button type="submit" class="btn btn-sm btn-success">
+                            @(habit.LastCompletedDate == DateTime.Today ? "Undo" : "Complete")
+                        </button>
+                    </form>
+                    <a asp-action="Edit" asp-route-id="@habit.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@habit.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        window.setTimeout(function () {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }
+        }, 3000);
+    </script>
+}

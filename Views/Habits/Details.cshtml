@@ -1,14 +1,22 @@
 @model HabitHero.Models.Habit
 
 @{
-    ViewData["Title"] = "Habit Details";
+    ViewData["Title"] = "Delete Habit";
 }
 
-<h1>@Model.Name</h1>
-<p>@Model.Description</p>
-<p>Start Date: @Model.StartDate.ToShortDateString()</p>
+<h1 class="mb-4 text-danger">Delete Habit</h1>
 
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
-</p>
+<p>Are you sure you want to delete this habit?</p>
+
+<div class="card p-3 mb-3">
+    <h5>@Model.Name</h5>
+    <p>@Model.Description</p>
+    <p><strong>Start Date:</strong> @Model.StartDate.ToShortDateString()</p>
+    <p><strong>Current Streak:</strong> @Model.CurrentStreak</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

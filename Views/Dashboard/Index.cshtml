@@ -1,0 +1,70 @@
+﻿@model IEnumerable<HabitHero.Models.Habit>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1 class="mb-4">Habit Dashboard</h1>
+<p>Visualize your current streaks for all habits.</p>
+
+<div class="row">
+    <div class="col-md-8">
+        <canvas id="streakChart" width="400" height="200"></canvas>
+    </div>
+    <div class="col-md-4">
+        <h4 class="mt-3">Your Habits</h4>
+        <ul class="list-group">
+            @foreach (var habit in Model)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    @habit.Name
+                    <span class="badge bg-success rounded-pill">@habit.CurrentStreak</span>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<p class="mt-3">
+    <a asp-controller="Habits" asp-action="Index" class="btn btn-primary">Back to Habits</a>
+    <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;" class="ms-2">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</p>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('streakChart').getContext('2d');
+
+        const habitNames = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(h => h.Name)));
+        const streaks = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(h => h.CurrentStreak)));
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: habitNames,
+                datasets: [{
+                    label: 'Current Streak',
+                    data: streaks,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+}
