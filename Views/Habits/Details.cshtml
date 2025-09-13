@@ -1,0 +1,14 @@
+@model HabitHero.Models.Habit
+
+@{
+    ViewData["Title"] = "Habit Details";
+}
+
+<h1>@Model.Name</h1>
+<p>@Model.Description</p>
+<p>Start Date: @Model.StartDate.ToShortDateString()</p>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</p>

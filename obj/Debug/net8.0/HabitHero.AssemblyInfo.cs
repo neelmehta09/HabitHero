@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HabitHero")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bacd9047d47810ff797590f9e13eac0bf8daaf71")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+85640ec14fcf60d2dd4994f7f3150bf0f3df3136")]
 [assembly: System.Reflection.AssemblyProductAttribute("HabitHero")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HabitHero")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

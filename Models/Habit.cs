@@ -1,22 +1,19 @@
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace HabitHero.Models
+namespace HabitHero.Models;
+
+public partial class Habit
 {
-	public class Habit
-	{
-		public int Id { get; set; }
+    public int Id { get; set; }
 
-		[Required]
-		[StringLength(100)]
-		public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
-		public string Description { get; set; }
+    public string? Description { get; set; }
 
-		public DateTime StartDate { get; set; } = DateTime.Now;
+    public DateTime StartDate { get; set; }
 
-		public int StreakCount { get; set; } = 0;
+    public DateTime? LastCompletedDate { get; set; }
 
-		public bool IsCompletedToday { get; set; } = false;
-	}
+    public int CurrentStreak { get; set; }
 }
